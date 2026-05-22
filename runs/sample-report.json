@@ -1,0 +1,41 @@
+{
+  "run_id": "aaacdf25-e499-40e0-b8a6-d631add25859",
+  "created_at": "2026-05-22T02:55:44.736940Z",
+  "dataset_path": "datasets\\sample.jsonl",
+  "summary": {
+    "total_cases": 2,
+    "passed_cases": 2,
+    "pass_rate": 1.0,
+    "average_relevance": 1.0,
+    "average_groundedness": 1.0,
+    "average_citation": 1.0,
+    "average_json_validity": 1.0,
+    "total_estimated_cost_usd": 1.8000000000000001e-6,
+    "p95_latency_ms": 0.001499999598308932,
+    "quality_gate_passed": true
+  },
+  "results": [
+    {
+      "case_id": "case-001",
+      "passed": true,
+      "relevance_score": 1.0,
+      "groundedness_score": 1.0,
+      "citation_score": 1.0,
+      "json_validity_score": 1.0,
+      "latency_ms": 0.001499999598308932,
+      "estimated_cost_usd": 1.65e-6,
+      "notes": ""
+    },
+    {
+      "case_id": "case-002",
+      "passed": true,
+      "relevance_score": 1.0,
+      "groundedness_score": 1.0,
+      "citation_score": 1.0,
+      "json_validity_score": 1.0,
+      "latency_ms": 0.0005000001692678779,
+      "estimated_cost_usd": 1.5e-7,
+      "notes": ""
+    }
+  ]
+}

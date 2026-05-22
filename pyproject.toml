@@ -1,0 +1,27 @@
+[project]
+name = "llm-eval-observability"
+version = "0.1.0"
+description = "Evaluation and observability platform for LLM, RAG, and agent workflows."
+requires-python = ">=3.11"
+dependencies = [
+  "pydantic>=2.6",
+  "typer>=0.12",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+  "ruff>=0.3",
+]
+openai = [
+  "openai>=1.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.setuptools.packages.find]
+include = ["evals*"]
+
+[tool.ruff]
+line-length = 100
