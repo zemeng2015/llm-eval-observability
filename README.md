@@ -10,45 +10,29 @@ AI engineering interviews increasingly test whether you can make LLM systems rel
 
 Built an LLM evaluation platform with regression datasets, automated scoring, prompt/version tracking, and CI quality gates for RAG and agent workflows.
 
-## Core Capabilities
+## Architecture
+
+```mermaid
+flowchart LR
+    Dataset[JSONL eval dataset] --> Runner[Eval runner]
+    Provider[Provider adapter] --> Runner
+    Runner --> Scorers[Scorers: relevance, citations, JSON, groundedness]
+    Scorers --> Report[JSON report]
+    Report --> Gate[CI quality gate]
+    Report --> History[SQLite run history]
+```
+
+## Implemented
 
 - Store golden test cases for RAG and agent workflows.
 - Run local prompt/model/version comparisons from JSONL datasets.
 - Score answer relevance, citation correctness, groundedness, JSON validity, latency, and cost.
 - Export JSON reports for CI and dashboards.
 - Track failures by prompt version and dataset.
-
-## Current Implementation
-
-This first version is intentionally local-first: eval cases include candidate answers and
-citations, so the reliability layer can be developed without depending on a live LLM provider.
-
-- JSONL eval case schema with expected facts, required citations, structured-output checks,
-  retrieval context, and metadata such as workflow and prompt version.
-- Scoring for relevance, citation correctness, groundedness, JSON validity, latency, and
-  estimated cost.
-- CLI runner that emits a full JSON report with per-case results and aggregate metrics.
-- Quality gate that exits non-zero when pass rate or groundedness falls below threshold.
 - Provider adapter interface with local `dataset-candidate` and `echo` providers.
 - Optional OpenAI Responses API provider for real model evals.
 - SQLite run history for tracking pass rate and groundedness over time.
 - Unit tests for scorer behavior and runner summaries.
-
-## Suggested Stack
-
-- Backend: FastAPI, Pydantic
-- Storage: SQLite locally, Postgres later
-- Eval runner: pytest-compatible CLI
-- Observability: OpenTelemetry-style traces, JSONL run logs
-- Dashboard later: React or Streamlit
-
-## Milestones
-
-1. Define eval case schema and JSONL datasets.
-2. Build local eval runner.
-3. Add scoring modules.
-4. Add run history and report export.
-5. Add CI quality gate.
 
 ## Local Development
 
@@ -96,15 +80,24 @@ The sample dataset currently passes the quality gate:
   "total_cases": 2,
   "passed_cases": 2,
   "pass_rate": 1.0,
+  "average_relevance": 1.0,
   "average_groundedness": 1.0,
+  "average_citation": 1.0,
   "quality_gate_passed": true
 }
 ```
 
-## Next Milestones
+## Interview Talking Points
+
+- Reliability layer for LLM apps: evals, regression data, quality gates, and run history.
+- Local-first design keeps development deterministic while still supporting real OpenAI model evals.
+- Scoring separates answer relevance, citation correctness, groundedness, structured-output validity, latency, and cost.
+- The project is designed to plug into RAG and agent systems as a CI quality gate.
+
+## Roadmap
 
 1. Add provider adapters for OpenAI and Bedrock.
 2. Add prompt/model/version comparison reports.
-3. Add GitHub Actions quality gate.
-4. Add a lightweight FastAPI endpoint for run history.
-5. Connect this eval runner to the mortgage RAG copilot.
+3. Add a lightweight FastAPI endpoint for run history.
+4. Connect this eval runner to the mortgage RAG copilot.
+5. Add dashboard views for pass-rate trends and failure clustering.
